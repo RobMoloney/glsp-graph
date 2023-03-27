@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (c) 2020 EclipseSource and others.
+ * Copyright (c) 2022-2023 STMicroelectronics and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -13,17 +13,19 @@
  *
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
+import { AbstractLayoutConfigurator, LayoutOptions } from '@eclipse-glsp/layout-elk';
+import { GGraph } from '@eclipse-glsp/server-node';
+import { injectable } from 'inversify';
 
-svg {
-    border-style: solid;
-    border-width: 1px;
-    border-color: #bbb;
-}
+@injectable()
+export class TaskListLayoutConfigurator extends AbstractLayoutConfigurator {
+    protected override graphOptions(graph: GGraph): LayoutOptions | undefined {
+        return {
+            'elk.algorithm': 'layered'
+        };
+    }
 
-.sprotty-node {
-    fill: inherit;
-}
-
-.tasklist-node > .sprotty-node {
-    fill: #756cf1;
+    // protected override graphOptions(graph: GGraph): LayoutOptions | undefined {
+    //     return undefined;
+    // }
 }

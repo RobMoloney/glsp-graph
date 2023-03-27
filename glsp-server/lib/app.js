@@ -16,8 +16,10 @@ exports.launch = void 0;
  *
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
+const layout_elk_1 = require("@eclipse-glsp/layout-elk");
 const server_node_1 = require("@eclipse-glsp/server-node");
 const inversify_1 = require("inversify");
+const tasks_layout_configurator_1 = require("./layout/tasks-layout-configurator");
 const tasklist_diagram_module_1 = require("./diagram/tasklist-diagram-module");
 function launch(argv) {
     const options = (0, server_node_1.createSocketCliParser)().parse(argv);
@@ -25,7 +27,8 @@ function launch(argv) {
     appContainer.load((0, server_node_1.createAppModule)(options));
     const logger = appContainer.get(server_node_1.LoggerFactory)('TaskListServerApp');
     const launcher = appContainer.resolve(server_node_1.SocketServerLauncher);
-    const serverModule = new server_node_1.ServerModule().configureDiagramModule(new tasklist_diagram_module_1.TaskListDiagramModule());
+    const elkLayoutModule = (0, layout_elk_1.configureELKLayoutModule)({ algorithms: ['layered'], layoutConfigurator: tasks_layout_configurator_1.TaskListLayoutConfigurator });
+    const serverModule = new server_node_1.ServerModule().configureDiagramModule(new tasklist_diagram_module_1.TaskListDiagramModule(), elkLayoutModule);
     const errorHandler = (error) => logger.error('Error in workflow server launcher:', error);
     launcher.configure(serverModule);
     (0, server_node_1.resolveAndCatch)(() => launcher.start({ port: options.port, host: options.host }), errorHandler);

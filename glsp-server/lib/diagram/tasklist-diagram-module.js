@@ -25,8 +25,10 @@ exports.TaskListDiagramModule = void 0;
 const server_node_1 = require("@eclipse-glsp/server-node");
 const inversify_1 = require("inversify");
 const create_task_node_handler_1 = require("../handler/create-task-node-handler");
+const create_edge_handler_1 = require("../handler/create-edge-handler");
 const create_transition_handler_1 = require("../handler/create-transition-handler");
 const delete_element_handler_1 = require("../handler/delete-element-handler");
+// import { LayoutElementsHandler } from '../handler/layout-elements-handler';
 const tasklist_apply_label_edit_handler_1 = require("../handler/tasklist-apply-label-edit-handler");
 const tasklist_change_bounds_handler_1 = require("../handler/tasklist-change-bounds-handler");
 const tasklist_label_edit_validator_1 = require("../handler/tasklist-label-edit-validator");
@@ -39,6 +41,9 @@ let TaskListDiagramModule = class TaskListDiagramModule extends server_node_1.Di
     constructor() {
         super(...arguments);
         this.diagramType = 'tasklist-diagram';
+        // protected override bindLayoutEngine(): BindingTarget<LayoutEngine> | undefined {
+        //     return GlspElkLayoutEngine;
+        // }
     }
     bindDiagramConfiguration() {
         return tasklist_diagram_configuration_1.TaskListDiagramConfiguration;
@@ -59,10 +64,12 @@ let TaskListDiagramModule = class TaskListDiagramModule extends server_node_1.Di
     configureOperationHandlers(binding) {
         super.configureOperationHandlers(binding);
         binding.add(create_task_node_handler_1.CreateTaskHandler);
+        binding.add(create_edge_handler_1.CreateEdgeHandler);
         binding.add(create_transition_handler_1.CreateTransitionHandler);
         binding.add(tasklist_change_bounds_handler_1.TaskListChangeBoundsHandler);
         binding.add(tasklist_apply_label_edit_handler_1.TaskListApplyLabelEditHandler);
         binding.add(delete_element_handler_1.DeleteElementHandler);
+        binding.add(server_node_1.LayoutOperationHandler);
     }
     bindGModelIndex() {
         this.context.bind(tasklist_model_index_1.TaskListModelIndex).toSelf().inSingletonScope();

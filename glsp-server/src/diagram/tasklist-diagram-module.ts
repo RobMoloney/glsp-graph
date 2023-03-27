@@ -16,6 +16,7 @@
 import {
     ActionHandlerConstructor,
     ComputedBoundsActionHandler,
+    LayoutOperationHandler,
     DiagramConfiguration,
     DiagramModule,
     GModelFactory,
@@ -28,9 +29,12 @@ import {
 } from '@eclipse-glsp/server-node';
 import { BindingTarget } from '@eclipse-glsp/server-node/lib/di/binding-target';
 import { injectable } from 'inversify';
+
 import { CreateTaskHandler } from '../handler/create-task-node-handler';
+import { CreateEdgeHandler } from '../handler/create-edge-handler';
 import { CreateTransitionHandler } from '../handler/create-transition-handler';
 import { DeleteElementHandler } from '../handler/delete-element-handler';
+// import { LayoutElementsHandler } from '../handler/layout-elements-handler';
 import { TaskListApplyLabelEditHandler } from '../handler/tasklist-apply-label-edit-handler';
 import { TaskListChangeBoundsHandler } from '../handler/tasklist-change-bounds-handler';
 import { TaskListLabelEditValidator } from '../handler/tasklist-label-edit-validator';
@@ -39,6 +43,7 @@ import { TaskListModelIndex } from '../model/tasklist-model-index';
 import { TaskListModelState } from '../model/tasklist-model-state';
 import { TaskListStorage } from '../model/tasklist-storage';
 import { TaskListDiagramConfiguration } from './tasklist-diagram-configuration';
+
 
 @injectable()
 export class TaskListDiagramModule extends DiagramModule {
@@ -68,10 +73,12 @@ export class TaskListDiagramModule extends DiagramModule {
     protected override configureOperationHandlers(binding: InstanceMultiBinding<OperationHandlerConstructor>): void {
         super.configureOperationHandlers(binding);
         binding.add(CreateTaskHandler);
+        binding.add(CreateEdgeHandler);
         binding.add(CreateTransitionHandler);
         binding.add(TaskListChangeBoundsHandler);
         binding.add(TaskListApplyLabelEditHandler);
         binding.add(DeleteElementHandler);
+        binding.add(LayoutOperationHandler);
     }
 
     protected override bindGModelIndex(): BindingTarget<GModelIndex> {
@@ -82,4 +89,8 @@ export class TaskListDiagramModule extends DiagramModule {
     protected override bindLabelEditValidator(): BindingTarget<LabelEditValidator> | undefined {
         return TaskListLabelEditValidator;
     }
+
+    // protected override bindLayoutEngine(): BindingTarget<LayoutEngine> | undefined {
+    //     return GlspElkLayoutEngine;
+    // }
 }
