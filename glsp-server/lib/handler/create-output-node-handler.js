@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.LayoutElementsHandler = void 0;
+exports.CreateOutputNodeHandler = void 0;
 /********************************************************************************
  * Copyright (c) 2022 EclipseSource and others.
  *
@@ -27,34 +27,40 @@ exports.LayoutElementsHandler = void 0;
  ********************************************************************************/
 const server_node_1 = require("@eclipse-glsp/server-node");
 const inversify_1 = require("inversify");
+const uuid = require("uuid");
 const tasklist_model_state_1 = require("../model/tasklist-model-state");
-let LayoutElementsHandler = class LayoutElementsHandler {
+const model_types_1 = require("../diagram/util/model-types");
+let CreateOutputNodeHandler = class CreateOutputNodeHandler extends server_node_1.CreateNodeOperationHandler {
     constructor() {
-        this.operationType = server_node_1.LayoutOperation.KIND;
+        super(...arguments);
+        this.elementTypeIds = [model_types_1.ModelTypes.OUTPUT];
     }
     execute(operation) {
-        operation.elementIds.forEach(elementId => this.delete(elementId));
-    }
-    delete(elementId) {
-        const gModelElement = this.getGModelElementToDelete(elementId);
-        console.log(gModelElement);
-    }
-    getGModelElementToDelete(elementId) {
         var _a;
-        const index = this.modelState.index;
-        const element = index.get(elementId);
-        if (element instanceof server_node_1.GNode || element instanceof server_node_1.GEdge) {
-            return element;
-        }
-        return (_a = index.findParentElement(elementId, (0, server_node_1.toTypeGuard)(server_node_1.GNode))) !== null && _a !== void 0 ? _a : index.findParentElement(elementId, (0, server_node_1.toTypeGuard)(server_node_1.GEdge));
+        const relativeLocation = (_a = this.getRelativeLocation(operation)) !== null && _a !== void 0 ? _a : server_node_1.Point.ORIGIN;
+        const task = this.createTask(relativeLocation);
+        const taskList = this.modelState.taskList;
+        taskList.tasks.push(task);
+    }
+    createTask(position) {
+        const nodeCounter = this.modelState.index.getAllByClass(server_node_1.GNode).length;
+        return {
+            id: uuid.v4(),
+            type: 'output',
+            name: `${nodeCounter}`,
+            position
+        };
+    }
+    get label() {
+        return 'Output';
     }
 };
 __decorate([
     (0, inversify_1.inject)(tasklist_model_state_1.TaskListModelState),
     __metadata("design:type", tasklist_model_state_1.TaskListModelState)
-], LayoutElementsHandler.prototype, "modelState", void 0);
-LayoutElementsHandler = __decorate([
+], CreateOutputNodeHandler.prototype, "modelState", void 0);
+CreateOutputNodeHandler = __decorate([
     (0, inversify_1.injectable)()
-], LayoutElementsHandler);
-exports.LayoutElementsHandler = LayoutElementsHandler;
-//# sourceMappingURL=layout-elements-handler.js.map
+], CreateOutputNodeHandler);
+exports.CreateOutputNodeHandler = CreateOutputNodeHandler;
+//# sourceMappingURL=create-output-node-handler.js.map

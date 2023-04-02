@@ -24,6 +24,7 @@ exports.TaskListDiagramConfiguration = void 0;
  ********************************************************************************/
 const server_node_1 = require("@eclipse-glsp/server-node");
 const inversify_1 = require("inversify");
+const model_types_1 = require("./util/model-types");
 let TaskListDiagramConfiguration = class TaskListDiagramConfiguration {
     constructor() {
         this.layoutKind = server_node_1.ServerLayoutKind.MANUAL;
@@ -31,18 +32,23 @@ let TaskListDiagramConfiguration = class TaskListDiagramConfiguration {
         this.animatedUpdate = true;
     }
     get typeMapping() {
-        return (0, server_node_1.getDefaultMapping)();
+        const mapping = (0, server_node_1.getDefaultMapping)();
+        mapping.set(model_types_1.ModelTypes.AND_BLOCK, server_node_1.GNode);
+        mapping.set(model_types_1.ModelTypes.ESTOP_BLOCK, server_node_1.GNode);
+        mapping.set(model_types_1.ModelTypes.INPUT, server_node_1.GNode);
+        mapping.set(model_types_1.ModelTypes.OUTPUT, server_node_1.GNode);
+        return mapping;
     }
     get shapeTypeHints() {
         return [
-            {
-                elementTypeId: server_node_1.DefaultTypes.NODE,
-                deletable: true,
-                reparentable: false,
-                repositionable: true,
-                resizable: true
-            }
+            this.createDefaultShapeTypeHint(model_types_1.ModelTypes.AND_BLOCK),
+            this.createDefaultShapeTypeHint(model_types_1.ModelTypes.ESTOP_BLOCK),
+            this.createDefaultShapeTypeHint(model_types_1.ModelTypes.INPUT),
+            this.createDefaultShapeTypeHint(model_types_1.ModelTypes.OUTPUT),
         ];
+    }
+    createDefaultShapeTypeHint(elementId) {
+        return { elementTypeId: elementId, repositionable: true, deletable: true, resizable: true, reparentable: true };
     }
     get edgeTypeHints() {
         return [
@@ -51,8 +57,14 @@ let TaskListDiagramConfiguration = class TaskListDiagramConfiguration {
                 deletable: true,
                 repositionable: false,
                 routable: false,
-                sourceElementTypeIds: [server_node_1.DefaultTypes.NODE],
-                targetElementTypeIds: [server_node_1.DefaultTypes.NODE]
+                sourceElementTypeIds: [model_types_1.ModelTypes.AND_BLOCK,
+                    model_types_1.ModelTypes.ESTOP_BLOCK,
+                    model_types_1.ModelTypes.INPUT,
+                    model_types_1.ModelTypes.OUTPUT],
+                targetElementTypeIds: [model_types_1.ModelTypes.AND_BLOCK,
+                    model_types_1.ModelTypes.ESTOP_BLOCK,
+                    model_types_1.ModelTypes.INPUT,
+                    model_types_1.ModelTypes.OUTPUT]
             }
         ];
     }

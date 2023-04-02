@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CreateTaskHandler = void 0;
+exports.CreateAndNodeHandler = void 0;
 /********************************************************************************
  * Copyright (c) 2022 EclipseSource and others.
  *
@@ -30,10 +30,10 @@ const inversify_1 = require("inversify");
 const uuid = require("uuid");
 const tasklist_model_state_1 = require("../model/tasklist-model-state");
 const model_types_1 = require("../diagram/util/model-types");
-let CreateTaskHandler = class CreateTaskHandler extends server_node_1.CreateNodeOperationHandler {
+let CreateAndNodeHandler = class CreateAndNodeHandler extends server_node_1.CreateNodeOperationHandler {
     constructor() {
         super(...arguments);
-        this.elementTypeIds = [model_types_1.ModelTypes.ESTOP_BLOCK];
+        this.elementTypeIds = [model_types_1.ModelTypes.AND_BLOCK];
     }
     execute(operation) {
         var _a;
@@ -46,21 +46,21 @@ let CreateTaskHandler = class CreateTaskHandler extends server_node_1.CreateNode
         const nodeCounter = this.modelState.index.getAllByClass(server_node_1.GNode).length;
         return {
             id: uuid.v4(),
-            type: 'estop',
-            name: `Estop${nodeCounter}`,
+            type: 'and',
+            name: `NewTaskNode${nodeCounter}`,
             position
         };
     }
     get label() {
-        return 'EStop';
+        return 'And';
     }
 };
 __decorate([
     (0, inversify_1.inject)(tasklist_model_state_1.TaskListModelState),
     __metadata("design:type", tasklist_model_state_1.TaskListModelState)
-], CreateTaskHandler.prototype, "modelState", void 0);
-CreateTaskHandler = __decorate([
+], CreateAndNodeHandler.prototype, "modelState", void 0);
+CreateAndNodeHandler = __decorate([
     (0, inversify_1.injectable)()
-], CreateTaskHandler);
-exports.CreateTaskHandler = CreateTaskHandler;
-//# sourceMappingURL=create-task-node-handler.js.map
+], CreateAndNodeHandler);
+exports.CreateAndNodeHandler = CreateAndNodeHandler;
+//# sourceMappingURL=create-and-node-handler.js.map

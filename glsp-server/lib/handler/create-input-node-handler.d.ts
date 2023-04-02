@@ -13,14 +13,14 @@
  *
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
-import { DiagramConfiguration, EdgeTypeHint, GModelElement, GModelElementConstructor, ServerLayoutKind, ShapeTypeHint } from '@eclipse-glsp/server-node';
-export declare class TaskListDiagramConfiguration implements DiagramConfiguration {
-    layoutKind: ServerLayoutKind;
-    needsClientLayout: boolean;
-    animatedUpdate: boolean;
-    get typeMapping(): Map<string, GModelElementConstructor<GModelElement>>;
-    get shapeTypeHints(): ShapeTypeHint[];
-    createDefaultShapeTypeHint(elementId: string): ShapeTypeHint;
-    get edgeTypeHints(): EdgeTypeHint[];
+import { CreateNodeOperation, CreateNodeOperationHandler, Point } from '@eclipse-glsp/server-node';
+import { Task } from '../model/tasklist-model';
+import { TaskListModelState } from '../model/tasklist-model-state';
+export declare class CreateInputNodeHandler extends CreateNodeOperationHandler {
+    readonly elementTypeIds: string[];
+    protected modelState: TaskListModelState;
+    execute(operation: CreateNodeOperation): void;
+    protected createTask(position: Point): Task;
+    get label(): string;
 }
-//# sourceMappingURL=tasklist-diagram-configuration.d.ts.map
+//# sourceMappingURL=create-input-node-handler.d.ts.map

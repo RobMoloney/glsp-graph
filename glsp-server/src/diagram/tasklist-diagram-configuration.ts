@@ -21,9 +21,12 @@ import {
     GModelElement,
     GModelElementConstructor,
     ServerLayoutKind,
-    ShapeTypeHint
+    ShapeTypeHint,
+    GNode,
+
 } from '@eclipse-glsp/server-node';
 import { injectable } from 'inversify';
+import { ModelTypes as types } from './util/model-types';
 
 @injectable()
 export class TaskListDiagramConfiguration implements DiagramConfiguration {
@@ -32,20 +35,28 @@ export class TaskListDiagramConfiguration implements DiagramConfiguration {
     animatedUpdate = true;
 
     get typeMapping(): Map<string, GModelElementConstructor<GModelElement>> {
-        return getDefaultMapping();
+        const mapping = getDefaultMapping();
+        mapping.set(types.AND_BLOCK, GNode);
+        mapping.set(types.ESTOP_BLOCK, GNode);
+        mapping.set(types.INPUT, GNode);
+        mapping.set(types.OUTPUT, GNode);
+
+        return mapping;
     }
 
     get shapeTypeHints(): ShapeTypeHint[] {
         return [
-            {
-                elementTypeId: DefaultTypes.NODE,
-                deletable: true,
-                reparentable: false,
-                repositionable: true,
-                resizable: true
-            }
+            this.createDefaultShapeTypeHint(types.AND_BLOCK),
+            this.createDefaultShapeTypeHint(types.ESTOP_BLOCK),
+            this.createDefaultShapeTypeHint(types.INPUT),
+            this.createDefaultShapeTypeHint(types.OUTPUT),
         ];
     }
+
+    createDefaultShapeTypeHint(elementId: string): ShapeTypeHint {
+        return { elementTypeId: elementId, repositionable: true, deletable: true, resizable: true, reparentable: true };
+    }
+    
 
     get edgeTypeHints(): EdgeTypeHint[] {
         return [
@@ -54,8 +65,14 @@ export class TaskListDiagramConfiguration implements DiagramConfiguration {
                 deletable: true,
                 repositionable: false,
                 routable: false,
-                sourceElementTypeIds: [DefaultTypes.NODE],
-                targetElementTypeIds: [DefaultTypes.NODE]
+                sourceElementTypeIds: [types.AND_BLOCK,
+                    types.ESTOP_BLOCK,
+                    types.INPUT,
+                    types.OUTPUT],
+                targetElementTypeIds: [types.AND_BLOCK,
+                    types.ESTOP_BLOCK,
+                    types.INPUT,
+                    types.OUTPUT]
             }
         ];
     }

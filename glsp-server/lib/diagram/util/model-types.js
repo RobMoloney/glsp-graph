@@ -1,5 +1,8 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ModelTypes = void 0;
 /********************************************************************************
- * Copyright (c) 2022 EclipseSource and others.
+ * Copyright (c) 2022-2023 STMicroelectronics and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -13,14 +16,12 @@
  *
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
-import { DiagramConfiguration, EdgeTypeHint, GModelElement, GModelElementConstructor, ServerLayoutKind, ShapeTypeHint } from '@eclipse-glsp/server-node';
-export declare class TaskListDiagramConfiguration implements DiagramConfiguration {
-    layoutKind: ServerLayoutKind;
-    needsClientLayout: boolean;
-    animatedUpdate: boolean;
-    get typeMapping(): Map<string, GModelElementConstructor<GModelElement>>;
-    get shapeTypeHints(): ShapeTypeHint[];
-    createDefaultShapeTypeHint(elementId: string): ShapeTypeHint;
-    get edgeTypeHints(): EdgeTypeHint[];
-}
-//# sourceMappingURL=tasklist-diagram-configuration.d.ts.map
+/* eslint-disable @typescript-eslint/padding-line-between-statements */
+var ModelTypes;
+(function (ModelTypes) {
+    ModelTypes.AND_BLOCK = 'and';
+    ModelTypes.ESTOP_BLOCK = 'estop';
+    ModelTypes.INPUT = 'input';
+    ModelTypes.OUTPUT = 'output';
+})(ModelTypes = exports.ModelTypes || (exports.ModelTypes = {}));
+//# sourceMappingURL=model-types.js.map

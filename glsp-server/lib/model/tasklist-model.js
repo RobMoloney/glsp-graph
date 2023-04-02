@@ -27,7 +27,7 @@ var TaskList;
 var Task;
 (function (Task) {
     function is(object) {
-        return server_node_1.AnyObject.is(object) && (0, server_node_1.hasStringProp)(object, 'id') && (0, server_node_1.hasStringProp)(object, 'name') && (0, server_node_1.hasObjectProp)(object, 'position');
+        return server_node_1.AnyObject.is(object) && (0, server_node_1.hasStringProp)(object, 'id') && (0, server_node_1.hasStringProp)(object, 'name') && (0, server_node_1.hasObjectProp)(object, 'position') && (0, server_node_1.hasStringProp)(object, 'type');
     }
     Task.is = is;
 })(Task = exports.Task || (exports.Task = {}));

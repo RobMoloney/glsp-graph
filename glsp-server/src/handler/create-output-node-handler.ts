@@ -21,8 +21,8 @@ import { TaskListModelState } from '../model/tasklist-model-state';
 import { ModelTypes as types } from '../diagram/util/model-types';
 
 @injectable()
-export class CreateTaskHandler extends CreateNodeOperationHandler {
-    readonly elementTypeIds = [types.ESTOP_BLOCK];
+export class CreateOutputNodeHandler extends CreateNodeOperationHandler {
+    readonly elementTypeIds = [types.OUTPUT];
 
     @inject(TaskListModelState)
     protected override modelState: TaskListModelState;
@@ -38,13 +38,13 @@ export class CreateTaskHandler extends CreateNodeOperationHandler {
         const nodeCounter = this.modelState.index.getAllByClass(GNode).length;
         return {
             id: uuid.v4(),
-            type: 'estop',
-            name: `Estop${nodeCounter}`,
+            type: 'output',
+            name: `${nodeCounter}`,
             position
         };
     }
 
     get label(): string {
-        return 'EStop';
+        return 'Output';
     }
 }

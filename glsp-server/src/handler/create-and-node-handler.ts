@@ -13,7 +13,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
-import { CreateNodeOperation, CreateNodeOperationHandler, GNode, Point } from '@eclipse-glsp/server-node';
+import { CreateNodeOperation, CreateNodeOperationHandler, DefaultTypes, GNode, Point } from '@eclipse-glsp/server-node';
 import { inject, injectable } from 'inversify';
 import * as uuid from 'uuid';
 import { Task } from '../model/tasklist-model';
@@ -21,8 +21,8 @@ import { TaskListModelState } from '../model/tasklist-model-state';
 import { ModelTypes as types } from '../diagram/util/model-types';
 
 @injectable()
-export class CreateTaskHandler extends CreateNodeOperationHandler {
-    readonly elementTypeIds = [types.ESTOP_BLOCK];
+export class CreateAndNodeHandler extends CreateNodeOperationHandler {
+    readonly elementTypeIds = [types.AND_BLOCK, DefaultTypes.NODE_CIRCLE];
 
     @inject(TaskListModelState)
     protected override modelState: TaskListModelState;
@@ -38,13 +38,13 @@ export class CreateTaskHandler extends CreateNodeOperationHandler {
         const nodeCounter = this.modelState.index.getAllByClass(GNode).length;
         return {
             id: uuid.v4(),
-            type: 'estop',
-            name: `Estop${nodeCounter}`,
+            type: 'and',
+            name: `And${nodeCounter}`,
             position
         };
     }
 
     get label(): string {
-        return 'EStop';
+        return 'And';
     }
 }

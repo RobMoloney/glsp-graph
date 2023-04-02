@@ -13,7 +13,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
-import { GEdge, GGraph, GLabel, GModelFactory, GNode } from '@eclipse-glsp/server-node';
+import { GEdge, GGraph, GLabel, GModelFactory, GNode, DefaultTypes } from '@eclipse-glsp/server-node';
 import { inject, injectable } from 'inversify';
 import { Task, Transition } from './tasklist-model';
 import { TaskListModelState } from './tasklist-model-state';
@@ -39,11 +39,15 @@ export class TaskListGModelFactory implements GModelFactory {
     protected createTaskNode(task: Task): GNode {
         const builder = GNode.builder()
             .id(task.id)
-            .addCssClass('tasklist-node')
+            .addCssClass('tasklist-'+task.type)
             .add(GLabel.builder().text(task.name).id(`${task.id}_label`).build())
             .layout('hbox')
             .addLayoutOption('paddingLeft', 5)
             .position(task.position);
+
+        if(task.type === 'input' || task.type === 'output'){
+            builder.type(DefaultTypes.NODE_CIRCLE);
+        }
 
         if (task.size) {
             builder.addLayoutOptions({ prefWidth: task.size.width, prefHeight: task.size.height });

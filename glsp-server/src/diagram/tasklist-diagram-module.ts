@@ -31,10 +31,12 @@ import { BindingTarget } from '@eclipse-glsp/server-node/lib/di/binding-target';
 import { injectable } from 'inversify';
 
 import { CreateTaskHandler } from '../handler/create-task-node-handler';
+import { CreateInputNodeHandler } from '../handler/create-input-node-handler';
+import { CreateOutputNodeHandler } from '../handler/create-output-node-handler';
+import { CreateAndNodeHandler } from '../handler/create-and-node-handler';
 import { CreateEdgeHandler } from '../handler/create-edge-handler';
 import { CreateTransitionHandler } from '../handler/create-transition-handler';
 import { DeleteElementHandler } from '../handler/delete-element-handler';
-// import { LayoutElementsHandler } from '../handler/layout-elements-handler';
 import { TaskListApplyLabelEditHandler } from '../handler/tasklist-apply-label-edit-handler';
 import { TaskListChangeBoundsHandler } from '../handler/tasklist-change-bounds-handler';
 import { TaskListLabelEditValidator } from '../handler/tasklist-label-edit-validator';
@@ -73,6 +75,9 @@ export class TaskListDiagramModule extends DiagramModule {
     protected override configureOperationHandlers(binding: InstanceMultiBinding<OperationHandlerConstructor>): void {
         super.configureOperationHandlers(binding);
         binding.add(CreateTaskHandler);
+        binding.add(CreateAndNodeHandler);
+        binding.add(CreateInputNodeHandler);
+        binding.add(CreateOutputNodeHandler);
         binding.add(CreateEdgeHandler);
         binding.add(CreateTransitionHandler);
         binding.add(TaskListChangeBoundsHandler);
@@ -89,8 +94,4 @@ export class TaskListDiagramModule extends DiagramModule {
     protected override bindLabelEditValidator(): BindingTarget<LabelEditValidator> | undefined {
         return TaskListLabelEditValidator;
     }
-
-    // protected override bindLayoutEngine(): BindingTarget<LayoutEngine> | undefined {
-    //     return GlspElkLayoutEngine;
-    // }
 }

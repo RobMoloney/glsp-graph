@@ -44,11 +44,14 @@ let TaskListGModelFactory = class TaskListGModelFactory {
     createTaskNode(task) {
         const builder = server_node_1.GNode.builder()
             .id(task.id)
-            .addCssClass('tasklist-node')
+            .addCssClass('tasklist-' + task.type)
             .add(server_node_1.GLabel.builder().text(task.name).id(`${task.id}_label`).build())
             .layout('hbox')
             .addLayoutOption('paddingLeft', 5)
             .position(task.position);
+        if (task.type === 'input' || task.type === 'output') {
+            builder.type(server_node_1.DefaultTypes.NODE_CIRCLE);
+        }
         if (task.size) {
             builder.addLayoutOptions({ prefWidth: task.size.width, prefHeight: task.size.height });
         }

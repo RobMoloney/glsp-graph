@@ -35,13 +35,14 @@ export namespace TaskList {
 export interface Task {
     id: string;
     name: string;
+    type: string;
     position: { x: number; y: number };
     size?: { width: number; height: number };
 }
 
 export namespace Task {
     export function is(object: any): object is Task {
-        return AnyObject.is(object) && hasStringProp(object, 'id') && hasStringProp(object, 'name') && hasObjectProp(object, 'position');
+        return AnyObject.is(object) && hasStringProp(object, 'id') && hasStringProp(object, 'name') && hasObjectProp(object, 'position') && hasStringProp(object, 'type');
     }
 }
 

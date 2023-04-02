@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (c) 2022 EclipseSource and others.
+ * Copyright (c) 2022-2023 STMicroelectronics and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -13,13 +13,10 @@
  *
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
-import { LayoutOperation, MaybePromise, OperationHandler } from '@eclipse-glsp/server-node';
-import { TaskListModelState } from '../model/tasklist-model-state';
-export declare class LayoutElementsHandler implements OperationHandler {
-    readonly operationType = "layout";
-    protected modelState: TaskListModelState;
-    execute(operation: LayoutOperation): MaybePromise<void>;
-    protected delete(elementId: string): void;
-    private getGModelElementToDelete;
+export declare namespace ModelTypes {
+    const AND_BLOCK = "and";
+    const ESTOP_BLOCK = "estop";
+    const INPUT = "input";
+    const OUTPUT = "output";
 }
-//# sourceMappingURL=layout-elements-handler.d.ts.map
+//# sourceMappingURL=model-types.d.ts.map
